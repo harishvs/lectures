@@ -84,3 +84,28 @@ This confirms: 24 blocks × 48 threads/block = 1152 total threads
 d
 This executes only when the condition on line 04 is true: if(row < N && col < M)
 With N=150, M=300: 150 × 300 = 45000
+
+For a 2D matrix stored in row-major order as a 1D array, the formula to find the array index is:
+
+index = (row × width) + column
+
+
+
+For a 3D tensor stored in row-major order as a 1D array, the formula to find the array index is:
+
+index = (y × width × depth) + (x × depth) + z
+
+
+For a 4D tensor stored in row-major order as a 1D array, the formula extends the pattern:
+
+index = (w × dim1 × dim2 × dim3) + (z × dim2 × dim3) + (y × dim3) + x
+
+Or more generally, if your dimensions are [D0, D1, D2, D3] and you want to access element [i0, i1, i2, i3]:
+
+index = i0 × (D1 × D2 × D3) + i1 × (D2 × D3) + i2 × D3 + i3
+
+Example: If you have a 4D tensor with dimensions [batch=10, channels=3, height=500, width=400] and want to access element at [batch=2, channel=1, y=20, x=10]:
+
+index = (2 × 3 × 500 × 400) + (1 × 500 × 400) + (20 × 400) + 10 = 1,200,000 + 200,000 + 8,000 + 10 = 1,408,010
+
+The pattern is: each dimension multiplies by the product of all dimensions to its right, working from outermost to innermost dimension.
