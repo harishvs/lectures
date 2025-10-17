@@ -3,7 +3,7 @@
 // Kernel: Each thread computes one row of output_matrix
 // output_matrix = input_matrix1 × input_matrix2, where input_matrix1 is total_rows×K, input_matrix2 is K×total_cols, output_matrix is total_rows×total_cols
 __global__ void matMulRow(float *input_matrix1, float *input_matrix2, float *output_matrix, int total_rows, int K, int total_cols) {
-    int row = blockIdx.x * blockDim.x + threadIdx.x;
+    int row = blockIdx.y * blockDim.y + threadIdx.y;
     
     if (row < total_rows) {
         // Compute entire row

@@ -10,6 +10,7 @@ __global__ void matMulCol(float *input_matrix1, float *input_matrix2, float *out
         for (int row = 0; row < total_rows; row++) {
             float sum = 0.0f;
             for (int k = 0; k < K; k++) {
+                // formula = M[row][col] = M[(row*number_of_columns)+col]
                 sum += input_matrix1[row * K + k] * input_matrix2[k * total_cols + col];
             }
             output_matrix[row * total_cols + col] = sum;
@@ -22,9 +23,9 @@ __global__ void matMulCol(float *input_matrix1, float *input_matrix2, float *out
 
 int main() {
     // Matrix dimensions
-    int total_rows = 512;
-    int K = 256;
-    int total_cols = 512;
+    int total_rows = 4;
+    int K = 2;
+    int total_cols = 4;
     
     size_t size1 = total_rows * K * sizeof(float);
     size_t size2 = K * total_cols * sizeof(float);
@@ -38,6 +39,8 @@ int main() {
     // Initialize input matrices
     for (int i = 0; i < total_rows * K; i++) h_input1[i] = 1.0f;
     for (int i = 0; i < K * total_cols; i++) h_input2[i] = 1.0f;
+    print(h_input1)
+    print(h_input2)
     
     // Allocate device memory
     float *d_input1, *d_input2, *d_output;
